@@ -140,3 +140,23 @@ thunderbird_profile_directories() {
     echo "${directories[@]}" 
     return 0
 }
+
+nssdbtype() {
+    # What nssdb type is there in this directory
+    local directory="$1"
+
+    if [ ! -d "$directory" ]; then
+        # echo ""
+        return 1
+    fi
+    if [ -e "${directory}/cert9.db" ]; then
+        file -b "${directory}/cert9.db" | awk '{ print $1 }'
+        return 0
+    fi
+    if [ -e "${directory}/cert8.db" ]; then
+        file -b "${directory}/cert8.db" | awk '{ print $1 }'
+        return 0
+    fi
+    # echo ""
+    return 1
+}
